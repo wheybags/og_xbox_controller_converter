@@ -1,0 +1,34 @@
+https://github.com/emoose/Xb2XInput/blob/8f4187a23ecd834961151fb68b7a17334820986b/Xb2XInput/XboxController.cpp
+
+https://www.pjrc.com/teensy/beta/usb20.pdf
+https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/ehci-specification-for-usb.pdf
+
+- appears as a usb hub, wat
+- I expected a HID
+- ooooh the library is less libusb, more in-tree device driver compilation
+
+- there's this whole ehci thing whoich defines mmio registers for accessing usb controllers
+
+- eventually able to determine the hub device had another device attached, and that was the xbox controller
+AAAA  idVendor 45e
+AAAA  idProduct 1c
+AAAA  deviceClass 9
+AAAA  deviceSubClass 0
+AAAA  deviceProtocol 0
+*** 0 Device Hub1 45e:1c - connected ***
+  deviceClass 9
+  deviceSubClass 0
+  deviceProtocol 0
+AAAA  idVendor 45e
+AAAA  idProduct 202
+AAAA  deviceClass 0
+AAAA  deviceSubClass 0
+AAAA  deviceProtocol 0
+
+- https://github.com/emoose/Xb2XInput/blob/8f4187a23ecd834961151fb68b7a17334820986b/Xb2XInput/XboxController.cpp#L11 0x45e 0x202 - "Microsoft Xbox Controller v1 (US)" bingo
+- it's really not a HID, hmmm
+
+- whack on the shenzhen io ost
+- wow arduino is so bad
+- tried platformio https://blog.jetbrains.com/clion/2020/08/arduino-from-hobby-to-prof-p1/ but got random errors
+- fake cmakelists.txt just to get clion working, then forward from .ino to cpp immediately
