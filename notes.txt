@@ -32,3 +32,14 @@ AAAA  deviceProtocol 0
 - wow arduino is so bad
 - tried platformio https://blog.jetbrains.com/clion/2020/08/arduino-from-hobby-to-prof-p1/ but got random errors
 - fake cmakelists.txt just to get clion working, then forward from .ino to cpp immediately
+
+XboxControllerDriver::pipeInCallback
+00 14 00 00 00 00 00 00 00 00 00 00 F4 F0 00 00 96 1B 76 F3
+
+vs
+
+XboxControllerDriver::pipeInCallback
+00 14 00 00 93 00 00 00 00 00 00 00 F4 F0 00 00 96 1B 76 F3
+
+when holding down A. That's input!!!
+TIL
