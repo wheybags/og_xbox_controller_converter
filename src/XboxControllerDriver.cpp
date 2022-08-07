@@ -152,9 +152,10 @@ void XboxControllerDriver::pipeInCallback(const Transfer_t* transfer)
 {
   Serial.print("XboxControllerDriver::pipeInCallback\n");
   printHex(transfer->buffer, transfer->length);
+  //Serial.printf("%d %d\n", (int)this->reportBuffer.Gamepad.bAnalogButtons[6], (int)this->reportBuffer.Gamepad.bAnalogButtons[7]);
   Serial.print("\n-----\n");
 
-  memset(&this->reportBuffer, 0, sizeof(XboxInputReport));
+  //memset(&this->reportBuffer, 0, sizeof(XboxInputReport));
   queue_Data_Transfer(this->pipeIn, &this->reportBuffer, sizeof(XboxInputReport), this);
 }
 

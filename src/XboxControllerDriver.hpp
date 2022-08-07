@@ -1,17 +1,38 @@
 #pragma once
 #include <Arduino.h>
-#include "USBHost_t36/USBHost_t36.h"
+#include <USBHost_t36.h>
 
 
 // https://github.com/emoose/Xb2XInput/blob/8f4187a23ecd834961151fb68b7a17334820986b/Xb2XInput/XboxController.hpp#L44
+
+// digital button bitmasks
+#define OGXINPUT_GAMEPAD_DPAD_UP           0x0001
+#define OGXINPUT_GAMEPAD_DPAD_DOWN         0x0002
+#define OGXINPUT_GAMEPAD_DPAD_LEFT         0x0004
+#define OGXINPUT_GAMEPAD_DPAD_RIGHT        0x0008
+#define OGXINPUT_GAMEPAD_START             0x0010
+#define OGXINPUT_GAMEPAD_BACK              0x0020
+#define OGXINPUT_GAMEPAD_LEFT_THUMB        0x0040
+#define OGXINPUT_GAMEPAD_RIGHT_THUMB       0x0080
+
+// analog button indexes
+#define OGXINPUT_GAMEPAD_A                0
+#define OGXINPUT_GAMEPAD_B                1
+#define OGXINPUT_GAMEPAD_X                2
+#define OGXINPUT_GAMEPAD_Y                3
+#define OGXINPUT_GAMEPAD_BLACK            4
+#define OGXINPUT_GAMEPAD_WHITE            5
+#define OGXINPUT_GAMEPAD_LEFT_TRIGGER     6
+#define OGXINPUT_GAMEPAD_RIGHT_TRIGGER    7
+
 struct OGXINPUT_GAMEPAD
 {
-  uint16_t    wButtons;
-  uint8_t    bAnalogButtons[8];
-  short   sThumbLX;
-  short   sThumbLY;
-  short   sThumbRX;
-  short   sThumbRY;
+  uint16_t wButtons;
+  uint8_t bAnalogButtons[8];
+  int16_t sThumbLX;
+  int16_t sThumbLY;
+  int16_t sThumbRX;
+  int16_t sThumbRY;
 };
 
 struct XboxInputReport {
@@ -27,6 +48,8 @@ public:
 	XboxControllerDriver(USBHost &host) { init(); }
 	XboxControllerDriver(USBHost *host) { init(); }
   virtual ~XboxControllerDriver() = default;
+
+  OGXINPUT_GAMEPAD getLatestReport() const { return reportBuffer.Gamepad; }
 
 protected:
 	bool claim(Device_t *device, int type, const uint8_t *descriptors, uint32_t len) override;

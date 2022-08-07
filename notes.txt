@@ -43,3 +43,29 @@ XboxControllerDriver::pipeInCallback
 
 when holding down A. That's input!!!
 TIL
+
+
+ok, so how to  emulate a 360 controller
+xinput
+
+lib for arduino / teensy 3 series : https://github.com/dmadison/ArduinoXInput https://github.com/dmadison/ArduinoXInput_Teensy
+
+ok, lets' port it to teensy 4!
+fails enumeration if maxpacketsize is set to 8? dunno lol, it works if I leave it at 64. That took a while to figure out...
+can't use endpoint 1 on teensy 4, reserved for future feature, so let's go ahead and remove that reservation... https://github.com/PaulStoffregen/cores/pull/578
+    spent like 3 weekends grinding at this, first the enumeration problem, then I couldn't sned anything on endpoint 1
+    even found and commented out the `if endpoint < 2` bit
+    finally thought to search github issues for endpoint 1, found that pr thank god
+        the only thing I was missing was the endpoint config for endpoint 1, so obvious in hindsight
+
+    My favourite part is how the debug console is usb, so I can't print shit
+    Just looking at wireshark all day (once I got the device to enumerate, wireshark doesn't show shit if you fail enumeration)
+        URB_FUNCTION_SYNC_RESET_PIPE_AND_CLEAR_STALL infinite loop
+
+
+    when it worked -> look at wireshark oshi sthose look suspiciously like valid packets -> alt tab to gamepad tester FUCK YESSSSS
+
+usbview is great
+
+
+got rumble packets working after that, it was a bit awkward, but not three bad compared, took only a few hours
