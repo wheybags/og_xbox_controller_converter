@@ -1,0 +1,110 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# wip stuff
+wip.*
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+# =========================
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+*.zip
+
+## ----------------------------------------------------
+## Arduino XInput - Teensy Boards Files
+
+# boards.txt
+teensy/**
+!teensy/avr/
+!teensy/avr/boards.txt
+
+# cores files
+!teensy/avr/cores/
+!teensy/avr/cores/teensy3/
+!teensy/avr/cores/teensy3/usb_desc.c
+!teensy/avr/cores/teensy3/usb_desc.h
+!teensy/avr/cores/teensy3/usb_dev.h
+!teensy/avr/cores/teensy3/usb_dev.c
+!teensy/avr/cores/teensy3/usb_xinput.c
+!teensy/avr/cores/teensy3/usb_xinput.h
+!teensy/avr/cores/teensy3/usb_inst.cpp
+!teensy/avr/cores/teensy3/usb_serial.h
+!teensy/avr/cores/teensy3/WProgram.h
+
+!teensy/avr/cores/teensy4/
+!teensy/avr/cores/teensy4/WProgram.h
+!teensy/avr/cores/teensy4/usb.c
+!teensy/avr/cores/teensy4/usb_desc.c
+!teensy/avr/cores/teensy4/usb_desc.h
+!teensy/avr/cores/teensy4/usb_inst.cpp
+!teensy/avr/cores/teensy4/usb_serial.h
+!teensy/avr/cores/teensy4/usb_xinput.h
+!teensy/avr/cores/teensy4/usb_xinput.c
