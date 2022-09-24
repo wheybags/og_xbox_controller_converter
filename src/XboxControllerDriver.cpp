@@ -25,19 +25,6 @@ enum class DescriptorType : uint8_t
   InterfacePower,
 };
 
-static void printHex(const void *ptr, uint32_t len)
-{
-	if (ptr == NULL || len == 0) return;
-	const uint8_t *p = (const uint8_t *)ptr;
-	do {
-		if (*p < 16) Serial.print('0');
-		Serial.print(*p++, HEX);
-		Serial.print(' ');
-	} while (--len);
-	Serial.println();
-}
-
-
 struct DescriptorBase
 {
   uint8_t bLength;
@@ -72,13 +59,6 @@ bool XboxControllerDriver::claim(Device_t* device, int type, const uint8_t* desc
   // 9 = USB hub
   if (device->bDeviceClass == 9)
     return false;
-
-//  release_assert(false);
-//  release_assert(descriptors[1] == uint8_t(DescriptorType::Interface));
-
-//  int32_t bNumEndPoints = descriptors[4];
-//  constexpr int32_t endpointsStart = 9;
-//  constexpr int32_t endpointDescriptorSize = 7;
 
   const EndpointDescriptor* endpointIn = nullptr;
   const EndpointDescriptor* endpointOut = nullptr;
@@ -128,47 +108,47 @@ bool XboxControllerDriver::claim(Device_t* device, int type, const uint8_t* desc
   memset(&this->reportBuffer, 0, sizeof(XboxInputReport));
   queue_Data_Transfer(this->pipeIn, &this->reportBuffer, sizeof(XboxInputReport), this);
 
+  this->setRumble({0,0}, true);
+
   return true;
 }
 
 void XboxControllerDriver::disconnect()
-{}
+{
+  memset(&this->reportBuffer, 0, sizeof(XboxInputReport));
+}
 
 void XboxControllerDriver::pipeInCallbackStatic(const Transfer_t* transfer)
 {
-  Serial.print("XboxControllerDriver::pipeInCallbackStatic\n");
   if (transfer->driver)
     ((XboxControllerDriver*)transfer->driver)->pipeInCallback(transfer);
 }
 
 void XboxControllerDriver::pipeOutCallbackStatic(const Transfer_t* transfer)
 {
-  Serial.print("XboxControllerDriver::pipeOutCallbackStatic\n");
   if (transfer->driver)
     ((XboxControllerDriver*)transfer->driver)->pipeOutCallback(transfer);
 }
 
-void XboxControllerDriver::pipeInCallback(const Transfer_t* transfer)
+void XboxControllerDriver::pipeInCallback(const Transfer_t*)
 {
-  Serial.print("XboxControllerDriver::pipeInCallback\n");
-  printHex(transfer->buffer, transfer->length);
-  //Serial.printf("%d %d\n", (int)this->reportBuffer.Gamepad.bAnalogButtons[6], (int)this->reportBuffer.Gamepad.bAnalogButtons[7]);
-  Serial.print("\n-----\n");
-
-  //memset(&this->reportBuffer, 0, sizeof(XboxInputReport));
   queue_Data_Transfer(this->pipeIn, &this->reportBuffer, sizeof(XboxInputReport), this);
 }
 
-void XboxControllerDriver::pipeOutCallback(const Transfer_t* transfer)
-{
-  Serial.print("XboxControllerDriver::pipeOutCallback\n");
-  printHex(transfer->buffer, transfer->length);
-  Serial.print("\n-----\n");
-}
+void XboxControllerDriver::pipeOutCallback(const Transfer_t*)
+{}
 
 void XboxControllerDriver::control(const Transfer_t* transfer)
+{}
+
+void XboxControllerDriver::setRumble(OGXINPUT_RUMBLE rumble, bool force)
 {
-  Serial.print("XboxControllerDriver::control\n");
-  printHex(transfer->buffer, transfer->length);
-  Serial.print("\n-----\n");
+  if (!force && memcmp(&rumble, &this->rumbleBuffer.Rumble, sizeof(OGXINPUT_RUMBLE)) == 0)
+    return;
+
+  memset(&this->rumbleBuffer, 0, sizeof(XboxOutputReport));
+  this->rumbleBuffer.bSize = sizeof(XboxOutputReport);
+  this->rumbleBuffer.Rumble = rumble;
+
+  queue_Data_Transfer(this->pipeOut, &this->rumbleBuffer, sizeof(XboxOutputReport), this);
 }

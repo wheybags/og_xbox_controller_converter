@@ -25,6 +25,13 @@
 #define OGXINPUT_GAMEPAD_LEFT_TRIGGER     6
 #define OGXINPUT_GAMEPAD_RIGHT_TRIGGER    7
 
+#pragma pack(push, 1)
+struct OGXINPUT_RUMBLE
+{
+  uint16_t wLeftMotorSpeed = 0;
+  uint16_t wRightMotorSpeed = 0;
+};
+
 struct OGXINPUT_GAMEPAD
 {
   uint16_t wButtons;
@@ -42,6 +49,12 @@ struct XboxInputReport {
   OGXINPUT_GAMEPAD Gamepad;
 };
 
+struct XboxOutputReport {
+  uint8_t bReportId;
+  uint8_t bSize;
+  OGXINPUT_RUMBLE Rumble;
+};
+#pragma pack(pop)
 
 class XboxControllerDriver : public USBDriver {
 public:
@@ -50,6 +63,7 @@ public:
   virtual ~XboxControllerDriver() = default;
 
   OGXINPUT_GAMEPAD getLatestReport() const { return reportBuffer.Gamepad; }
+  void setRumble(OGXINPUT_RUMBLE rumble, bool force = false);
 
 protected:
 	bool claim(Device_t *device, int type, const uint8_t *descriptors, uint32_t len) override;
@@ -69,6 +83,8 @@ private:
   Pipe_t* pipeOut = nullptr;
 
   XboxInputReport reportBuffer;
+
+  XboxOutputReport rumbleBuffer;
 
 private:
 	Pipe_t mypipes[3] __attribute__ ((aligned(32)));
