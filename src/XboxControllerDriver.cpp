@@ -149,6 +149,19 @@ void XboxControllerDriver::setRumble(OGXINPUT_RUMBLE rumble, bool force)
   memset(&this->rumbleBuffer, 0, sizeof(XboxOutputReport));
   this->rumbleBuffer.bSize = sizeof(XboxOutputReport);
   this->rumbleBuffer.Rumble = rumble;
+  this->rumbleBufferReady = true;
+}
+
+void XboxControllerDriver::update()
+{
+  if (!this->rumbleBufferReady)
+    return;
+
+  if (millis() - this->lastRumblePacketMillis < 100)
+    return;
+
+  this->lastRumblePacketMillis = millis();
+  this->rumbleBufferReady = false;
 
   queue_Data_Transfer(this->pipeOut, &this->rumbleBuffer, sizeof(XboxOutputReport), this);
 }

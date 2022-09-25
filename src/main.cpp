@@ -55,11 +55,12 @@ void mainLoop()
 
   XInput.setButton(XInputControl::BUTTON_LOGO, (gamepad.wButtons & OGXINPUT_GAMEPAD_BACK) && (gamepad.wButtons & OGXINPUT_GAMEPAD_START));
 
-  auto scale = [](uint8_t x360Rumble) { return uint16_t(uint32_t(x360Rumble * UINT16_MAX) / UINT8_MAX); };
+  auto scale = [](uint8_t x360Rumble) { return uint16_t(x360Rumble * 257);};
   xboxControllerDriver.setRumble(OGXINPUT_RUMBLE{
     .wLeftMotorSpeed = scale(XInput.getRumbleLeft()),
     .wRightMotorSpeed = scale(XInput.getRumbleRight())
   });
 
+  xboxControllerDriver.update();
   XInput.send();
 }

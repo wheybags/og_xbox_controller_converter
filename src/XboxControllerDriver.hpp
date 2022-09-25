@@ -64,6 +64,7 @@ public:
 
   OGXINPUT_GAMEPAD getLatestReport() const { return reportBuffer.Gamepad; }
   void setRumble(OGXINPUT_RUMBLE rumble, bool force = false);
+  void update();
 
 protected:
 	bool claim(Device_t *device, int type, const uint8_t *descriptors, uint32_t len) override;
@@ -85,6 +86,8 @@ private:
   XboxInputReport reportBuffer;
 
   XboxOutputReport rumbleBuffer;
+  bool rumbleBufferReady = false;
+  unsigned long lastRumblePacketMillis = 0;
 
 private:
 	Pipe_t mypipes[3] __attribute__ ((aligned(32)));
