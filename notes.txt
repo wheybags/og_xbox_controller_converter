@@ -69,3 +69,14 @@ usbview is great
 
 
 got rumble packets working after that, it was a bit awkward, but not three bad compared, took only a few hours
+
+solder job immediately fell apart
+
+wait for leaded solder
+    it's so much better
+
+played halo
+some bugs with rumble
+    fixed
+
+pc boots extremely slowly when connected, not sure what the deal is there
