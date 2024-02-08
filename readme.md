@@ -1,5 +1,5 @@
 # Xbox controller converter
-This repo contains firware to produce a hardware converter which allows an original xbox controller to present itself as an xbox 360 controller for use with pc games.
+This repo contains firmware to produce a hardware converter which allows an original xbox controller to present itself as an xbox 360 controller for use with pc games.
 
 ![](img/xbox_converter_open.jpg)
 Case is 3d printed, cad file is `case.FCStd` (freecad format). Glue the front on with epoxy to stop it sliding.
